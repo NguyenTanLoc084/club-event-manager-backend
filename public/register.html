@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CLB Event Manager | Đăng ký</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { font-family: 'Montserrat', sans-serif; background-color: #f8f9fa; }
+    .banner {
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg');
+      background-size: cover; background-position: center; color: white; padding: 80px 0; text-align: center;
+    }
+    .card-custom { border: none; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    #qr { max-width: 200px; display: none; margin: 0 auto; }
+  </style>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="index.html">🎉 CLB Event Manager</a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Tạo sự kiện</a></li>
+        <li class="nav-item"><a class="nav-link active" href="register.html">Đăng ký</a></li>
+        <li class="nav-item"><a class="nav-link" href="admin.html">Quản lý</a></li>
+        <li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section class="banner">
+  <div class="container">
+    <h1 class="fw-bold">Đăng ký tham gia</h1>
+    <p class="lead">Nhanh chóng – đơn giản – nhận vé QR ngay</p>
+  </div>
+</section>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+
+      <div class="card card-custom p-4">
+        <h3 class="mb-4 text-center fw-bold">📝 Thông tin đăng ký</h3>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold text-primary">Chọn sự kiện tham gia</label>
+          <select id="eventId" class="form-select form-select-lg border-primary">
+            <option value="">Đang tải danh sách sự kiện...</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Họ và tên</label>
+          <input id="fullname" class="form-control" placeholder="Ví dụ: Nguyễn Văn A">
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-semibold">Giới tính</label>
+            <select id="gender" class="form-select">
+              <option value="Nam">Nam</option>
+              <option value="Nữ">Nữ</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-semibold">Khóa học</label>
+            <input id="course" class="form-control" placeholder="K50, K51...">
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Email sinh viên</label>
+          <input id="email" type="email" class="form-control" placeholder="email@sinhvien.edu.vn">
+        </div>
+
+        <button class="btn btn-primary w-100 fw-bold py-2 shadow" onclick="handleUserRegistration()">
+          🎟 ĐĂNG KÝ NHẬN VÉ
+        </button>
+
+        <div id="qr-container" class="text-center mt-4" style="display:none;">
+          <hr>
+          <p class="text-success fw-bold mb-2">🎉 Đăng ký thành công!</p>
+          <p class="text-muted mb-2">🎟 Vé QR của bạn</p>
+          <img id="qr" src="" class="img-fluid rounded shadow-sm" style="display: none; width: 200px;">
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer class="text-center py-4 mt-5 text-muted border-top">
+  © 2026 CLB Event Manager – Agile Project
+</footer>
+
+<script src="js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,191 @@
+/* ===============================
+   GLOBAL
+================================ */
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f6f7f9;
+  color: #222;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* ===============================
+   NAVBAR
+================================ */
+.navbar {
+  padding: 14px 0;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: #ddd;
+  margin-left: 15px;
+  font-weight: 500;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link.active {
+  color: #fff;
+}
+
+/* ===============================
+   BANNER / HERO
+================================ */
+.banner {
+  height: 320px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  position: relative;
+  color: white;
+}
+
+.banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.banner .container {
+  position: relative;
+  z-index: 1;
+}
+
+.banner h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.6);
+}
+
+.banner p {
+  font-size: 1.1rem;
+  max-width: 600px;
+}
+
+/* ===============================
+   CARD
+================================ */
+.card-custom {
+  border-radius: 14px;
+  border: none;
+  background: #fff;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.card-custom h3,
+.card-custom h4 {
+  font-weight: 600;
+}
+
+/* ===============================
+   FORM
+================================ */
+.form-label {
+  font-weight: 500;
+}
+
+.form-control {
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+.form-control:focus {
+  border-color: #000;
+  box-shadow: none;
+}
+
+/* ===============================
+   BUTTON
+================================ */
+.btn {
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-weight: 600;
+}
+
+.btn-dark {
+  background-color: #111;
+  border: none;
+}
+
+.btn-dark:hover {
+  background-color: #000;
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+}
+
+.btn-success {
+  background-color: #198754;
+  border: none;
+}
+
+.btn-warning {
+  background-color: #f0ad4e;
+  border: none;
+}
+
+/* ===============================
+   TABLE (ADMIN)
+================================ */
+.table {
+  background: #fff;
+}
+
+.table th {
+  font-weight: 600;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f1f3f5;
+}
+
+.badge {
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  border-radius: 8px;
+}
+
+/* ===============================
+   QR CODE
+================================ */
+#qr {
+  max-width: 200px;
+}
+
+/* ===============================
+   FOOTER
+================================ */
+footer {
+  background: #111;
+  color: #bbb;
+  font-size: 0.9rem;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+@media (max-width: 768px) {
+  .banner {
+    height: 220px;
+  }
+
+  .banner h1 {
+    font-size: 2rem;
+  }
+}

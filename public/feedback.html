@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>CLB Event Manager</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="index.html">🎉 CLB Event Manager</a>
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item"><a class="nav-link" href="index.html">Tạo sự kiện</a></li>
+      <li class="nav-item"><a class="nav-link" href="register.html">Đăng ký</a></li>
+      <li class="nav-item"><a class="nav-link" href="admin.html">Quản lý</a></li>
+      <li class="nav-item"><a class="nav-link active" href="feedback.html">Feedback</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- BANNER -->
+<section class="banner" style="background-image:url('https://images.pexels.com/photos/3182751/pexels-photo-3182751.jpeg');">
+  <div class="container">
+    <h1>Feedback sự kiện</h1>
+    <p class="lead">Ý kiến của bạn giúp CLB cải thiện chất lượng sự kiện</p>
+  </div>
+</section>
+
+<!-- CONTENT -->
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+
+      <div class="card card-custom p-4">
+        <h4 class="mb-3 text-center">📝 Gửi phản hồi</h4>
+
+        <div class="mb-3">
+          <label class="form-label">Tên của bạn</label>
+          <input
+            id="name"
+            class="form-control"
+            placeholder="Nhập tên (không bắt buộc)"
+          >
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label">Nội dung phản hồi</label>
+          <textarea
+            id="content"
+            class="form-control"
+            rows="4"
+            placeholder="Bạn đánh giá thế nào về sự kiện?"
+          ></textarea>
+        </div>
+
+        <button
+          class="btn btn-warning w-100 fw-semibold"
+          onclick="sendFeedback()"
+        >
+          Gửi feedback
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="text-center py-3 mt-5">
+  © 2026 CLB Event Manager – Agile Project
+</footer>
+
+<script src="js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
