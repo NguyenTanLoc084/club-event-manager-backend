@@ -22,7 +22,7 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'agileteam782@gmail.com',
-    pass: 'xxxx xxxx xxxx xxxx' // Lộc nhớ thay mã 16 ký tự App Password vào đây nhé
+    pass: '12345678' 
   }
 });
 
@@ -145,3 +145,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
