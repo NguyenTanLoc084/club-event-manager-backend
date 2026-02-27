@@ -135,7 +135,7 @@
         const eventId = document.getElementById("eventId").value;
 
         if (!fullname || !email || !eventId) {
-            alert("Lộc nhắc bạn: Hãy điền đầy đủ tên, email và chọn sự kiện nhé!");
+            alert("Nhắc bạn: Hãy điền đầy đủ tên, email và chọn sự kiện nhé!");
             return;
         }
 
@@ -155,10 +155,11 @@
                 alert("Đăng ký thành công! Hãy lưu lại mã QR nhé.");
             }
         })
-        .catch(err => alert("Lỗi kết nối server rồi Lộc ơi!"));
+        .catch(err => alert("Lỗi kết nối server!"));
     }
 </script>
 
 </body>
 </html>
+
 
