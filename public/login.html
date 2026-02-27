@@ -77,17 +77,18 @@
                 body: JSON.stringify({ email, password })
             })
             .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    localStorage.setItem("isAdmin", "true");
-                    // Đợi một chút cho hiệu ứng mượt
-                    setTimeout(() => {
-                        window.location.href = "admin.html";
-                    }, 800);
-                } else {
-                    loader.classList.add("loader-hidden");
-                    alert("Mật khẩu không chính xác! Thử lại nhé Lộc.");
-                }
+.then(data => {
+    if (data.success) {
+        localStorage.setItem("isAdmin", "true");
+        // Đăng nhập xong vào thẳng trang quản lý danh sách
+        setTimeout(() => {
+            window.location.href = "admin.html"; 
+        }, 800);
+    } else {
+        loader.classList.add("loader-hidden");
+        alert("Mật khẩu không chính xác! Thử lại nhé Lộc.");
+    }
+})
             })
             .catch(() => {
                 loader.classList.add("loader-hidden");
