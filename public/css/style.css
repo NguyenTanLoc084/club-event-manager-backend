@@ -1,6 +1,3 @@
-/* ===============================
-   GLOBAL
-================================ */
 body {
   font-family: 'Montserrat', sans-serif;
   background-color: #f6f7f9;
@@ -11,9 +8,6 @@ a {
   text-decoration: none;
 }
 
-/* ===============================
-   NAVBAR
-================================ */
 .navbar {
   padding: 14px 0;
 }
@@ -34,9 +28,6 @@ a {
   color: #fff;
 }
 
-/* ===============================
-   BANNER / HERO
-================================ */
 .banner {
   height: 320px;
   background-size: cover;
@@ -86,9 +77,6 @@ a {
   font-weight: 600;
 }
 
-/* ===============================
-   FORM
-================================ */
 .form-label {
   font-weight: 500;
 }
@@ -103,9 +91,6 @@ a {
   box-shadow: none;
 }
 
-/* ===============================
-   BUTTON
-================================ */
 .btn {
   border-radius: 10px;
   padding: 10px 14px;
@@ -140,9 +125,6 @@ a {
   border: none;
 }
 
-/* ===============================
-   TABLE (ADMIN)
-================================ */
 .table {
   background: #fff;
 }
@@ -161,25 +143,16 @@ a {
   border-radius: 8px;
 }
 
-/* ===============================
-   QR CODE
-================================ */
 #qr {
   max-width: 200px;
 }
 
-/* ===============================
-   FOOTER
-================================ */
 footer {
   background: #111;
   color: #bbb;
   font-size: 0.9rem;
 }
 
-/* ===============================
-   RESPONSIVE
-================================ */
 @media (max-width: 768px) {
   .banner {
     height: 220px;
@@ -189,3 +162,4 @@ footer {
     font-size: 2rem;
   }
 }
+
