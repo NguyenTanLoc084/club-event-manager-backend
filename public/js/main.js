@@ -1,9 +1,4 @@
-/* ======================================
-   CONFIG & UTILS
-====================================== */
 const BASE_URL = window.location.origin; 
-
-// Hàm hiển thị loader khi cần thiết
 function showLoader(show = true) {
     const loader = document.getElementById("loader");
     if (loader) {
@@ -11,17 +6,13 @@ function showLoader(show = true) {
         else loader.classList.add("loader-hidden");
     }
 }
-
-/* ======================================
-   CREATE EVENT (ADMIN)
-====================================== */
 function handleCreateEvent() {
     const name = document.getElementById("eventName")?.value;
     const time = document.getElementById("eventTime")?.value;
     const location = document.getElementById("eventLocation")?.value;
 
     if (!name || !time || !location) {
-        alert("Lộc nhắc: Vui lòng nhập đầy đủ thông tin sự kiện nhé!");
+        alert("Vui lòng nhập đầy đủ thông tin sự kiện nhé!");
         return;
     }
 
@@ -35,18 +26,13 @@ function handleCreateEvent() {
     .then(data => {
         showLoader(false);
         alert("Tạo sự kiện thành công!");
-        window.location.href = "admin.html"; // Chuyển về quản lý để xem thành quả
+        window.location.href = "admin.html"; 
     })
     .catch(err => {
         showLoader(false);
         alert("Lỗi server: " + err.message);
     });
 }
-
-/* ======================================
-   LOAD DATA (AUTO RUN)
-====================================== */
-// Tự động tải danh sách sự kiện cho trang đăng ký
 function loadEvents() {
     const select = document.getElementById("eventId");
     if (!select) return;
@@ -61,10 +47,8 @@ function loadEvents() {
             select.innerHTML = events.map(e => `<option value="${e.id}">${e.name} – ${e.location}</option>`).join("");
         });
 }
-
-// Tự động tải danh sách người tham gia cho trang admin
 function loadParticipants() {
-    const list = document.getElementById("participantList"); // Đổi id cho khớp với admin.html mới
+    const list = document.getElementById("participantList"); 
     if (!list) return;
 
     fetch(`${BASE_URL}/api/participants`)
@@ -90,15 +74,10 @@ function loadParticipants() {
         });
 }
 
-// Chạy load data khi trang web mở
 document.addEventListener("DOMContentLoaded", () => {
     loadEvents();
     loadParticipants();
 });
-
-/* ======================================
-   REGISTER (GUEST)
-====================================== */
 function handleUserRegistration() { 
     const fullname = document.getElementById("fullname")?.value;
     const gender = document.getElementById("gender")?.value;
@@ -134,10 +113,6 @@ function handleUserRegistration() {
         alert("Lỗi kết nối server");
     });
 }
-
-/* ======================================
-   FEEDBACK
-====================================== */
 function sendFeedback() {
     const name = document.getElementById("fbName")?.value;
     const content = document.getElementById("fbContent")?.value;
@@ -156,7 +131,7 @@ function sendFeedback() {
     .then(res => {
         showLoader(false);
         if(res.ok) {
-            alert("Cảm ơn Lộc và Team đã nhận được phản hồi!");
+            alert("Cảm ơn Team đã nhận được phản hồi!");
             window.location.href = "index.html";
         }
     })
@@ -165,3 +140,4 @@ function sendFeedback() {
         alert("Không thể gửi phản hồi");
     });
 }
+
