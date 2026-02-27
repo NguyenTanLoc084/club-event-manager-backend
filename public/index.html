@@ -15,7 +15,6 @@
         .btn-admin { background: transparent; color: white; border: 2px solid white; }
         .btn-admin:hover { background: white; color: #1e3c72; transform: translateY(-5px); }
 
-        /* CSS cho hiệu ứng Loading */
         #loader {
             position: fixed;
             top: 0; left: 0;
@@ -69,27 +68,25 @@
                 </div>
             </div>
             
-            <p class="mt-4 small text-white-50">Dành cho sinh viên ngành Information Technology</p>
+            <p class="mt-4 small text-white-50">Dành cho sinh viên Trường Đại Học Sư Phạm TPHCM</p>
         </div>
     </div>
 
     <script>
-        // Tự động ẩn loading khi trang đã tải xong
         window.addEventListener("load", function() {
             const loader = document.getElementById("loader");
             setTimeout(() => {
                 loader.classList.add("loader-hidden");
-            }, 600); // Đợi một chút cho mượt mà
+            }, 600);
         });
-
-        // Hàm xử lý chuyển trang kèm hiệu ứng loading
         function navigateWithLoading(url) {
             const loader = document.getElementById("loader");
-            loader.classList.remove("loader-hidden"); // Hiện lại loader
+            loader.classList.remove("loader-hidden"); 
             setTimeout(() => {
                 window.location.href = url;
-            }, 700); // Chờ 0.7 giây trước khi chuyển trang
+            }, 700); 
         }
     </script>
 </body>
 </html>
+
