@@ -2,12 +2,25 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Quản lý sự kiện | Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý sự kiện | Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #f8f9fa; }
-        .table-container { background: white; border-radius: 15px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        body { font-family: 'Montserrat', sans-serif; background-color: #f0f2f5; margin: 0; }
+        .table-container { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .stat-card { border: none; border-radius: 15px; transition: transform 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); }
+        
+        /* Loader CSS */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #1e3c72; display: flex; justify-content: center; align-items: center;
+            z-index: 9999; transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        .spinner { width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loader-hidden { opacity: 0; visibility: hidden; }
     </style>
 </head>
 <body>
@@ -17,22 +30,47 @@
         }
     </script>
 
-    <nav class="navbar navbar-dark bg-dark mb-4">
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
         <div class="container">
-            <span class="navbar-brand fw-bold">📊 Admin Dashboard</span>
-            <button class="btn btn-outline-light btn-sm" onclick="logout()">Đăng xuất</button>
+            <a class="navbar-brand fw-bold" href="#">📊 ADMIN PANEL</a>
+            <div class="ms-auto d-flex align-items-center">
+                <a href="index.html" class="btn btn-outline-info btn-sm me-2">Tạo Sự Kiện</a>
+                <button class="btn btn-danger btn-sm fw-bold" onclick="logout()">Đăng xuất</button>
+            </div>
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container my-4">
         <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card stat-card bg-primary text-white p-3 mb-3">
+                    <h6 class="text-uppercase small fw-bold">Tổng số đăng ký</h6>
+                    <h2 id="totalParticipants" class="fw-bold mb-0">0</h2>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card stat-card bg-success text-white p-3 mb-3">
+                    <h6 class="text-uppercase small fw-bold">Đã Check-in</h6>
+                    <h2 id="totalCheckedIn" class="fw-bold mb-0">0</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
             <div class="col-md-12">
                 <div class="table-container">
-                    <h4 class="fw-bold mb-4">👥 Danh sách người tham gia</h4>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="fw-bold m-0 text-dark">👥 Danh sách tham gia</h4>
+                        <button class="btn btn-sm btn-outline-secondary" onclick="loadParticipants()">Làm mới dữ liệu</button>
+                    </div>
                     <div class="table-responsive">
-                        <table class="table table-hover">
+                        <table class="table table-hover align-middle">
                             <thead class="table-light">
-                                <tr>
+                                <tr class="small text-uppercase">
                                     <th>Họ và tên</th>
                                     <th>Khóa</th>
                                     <th>Email</th>
@@ -49,7 +87,18 @@
         </div>
     </div>
 
+    <footer class="text-center py-4 text-muted">
+        © 2026 CLB Event Manager – Dashboard dành cho Admin Lộc
+    </footer>
+
     <script>
+        // 1. Tự ẩn loader khi vào trang
+        window.addEventListener("load", function() {
+            setTimeout(() => {
+                document.getElementById("loader").classList.add("loader-hidden");
+            }, 500);
+        });
+
         function logout() {
             localStorage.removeItem("isAdmin");
             window.location.href = "login.html";
@@ -60,24 +109,36 @@
                 .then(res => res.json())
                 .then(data => {
                     const tbody = document.getElementById("participantList");
+                    const totalEl = document.getElementById("totalParticipants");
+                    const checkInEl = document.getElementById("totalCheckedIn");
+
+                    // Cập nhật thống kê
+                    totalEl.innerText = data.length;
+                    checkInEl.innerText = data.filter(p => p.checkedIn).length;
+
+                    // Cập nhật bảng
                     tbody.innerHTML = data.map(p => `
                         <tr>
-                            <td class="fw-semibold">${p.fullname}</td>
-                            <td>${p.course}</td>
-                            <td>${p.email}</td>
+                            <td class="fw-semibold text-primary">${p.fullname}</td>
+                            <td><span class="badge bg-light text-dark border">${p.course}</span></td>
+                            <td class="small">${p.email}</td>
                             <td>
                                 <span class="badge ${p.checkedIn ? 'bg-success' : 'bg-warning text-dark'}">
-                                    ${p.checkedIn ? 'Đã Check-in' : 'Chờ tham gia'}
+                                    ${p.checkedIn ? '✅ Đã Check-in' : '⏳ Chờ tham gia'}
                                 </span>
                             </td>
                             <td class="small text-muted">${new Date(p.registeredAt).toLocaleDateString('vi-VN')}</td>
                         </tr>
-                    `).join('');
-                });
+                    `).reverse().join(''); // Hiện người mới đăng ký lên đầu
+                })
+                .catch(() => console.error("Không thể tải danh sách"));
         }
 
-        // Tải dữ liệu khi trang web mở ra
+        // Tải dữ liệu ban đầu
         loadParticipants();
+
+        // Tự động cập nhật sau mỗi 30 giây để Lộc không cần nhấn F5
+        setInterval(loadParticipants, 30000);
     </script>
 </body>
 </html>
