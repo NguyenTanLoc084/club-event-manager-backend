@@ -22,7 +22,7 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'agileteam782@gmail.com',
-    pass: '12345678' 
+    pass: 'NHAP_MA_APP_PASSWORD_16_SO_TAI_DAY' // Lộc thay mã App Password vào đây
   }
 });
 
@@ -55,6 +55,7 @@ function writeJSON(file, data) {
 // 1. Đăng nhập Admin
 app.post("/api/admin/login", (req, res) => {
   const { email, password } = req.body;
+  // Khớp với thông tin Admin bạn đã chọn
   if (email === ADMIN_EMAIL && password === "123456") {
     res.json({ success: true });
   } else {
@@ -103,15 +104,18 @@ app.post("/api/register", async (req, res) => {
   }
 });
 
-// 5. Check-in
+// 5. Check-in (Dành cho cả Admin và Khách tự check-in)
 app.post("/api/checkin", (req, res) => {
   const list = readJSON(PARTICIPANT_FILE);
   const p = list.find(x => x.ticket === req.body.ticket);
-  if (!p) return res.status(404).json({ message: "Vé không hợp lệ" });
+  
+  if (!p) return res.status(404).json({ message: "Mã vé không tồn tại hoặc không hợp lệ!" });
+  if (p.checkedIn) return res.json({ message: "Vé này đã được check-in trước đó rồi." });
   
   p.checkedIn = true;
+  p.checkInTime = new Date().toISOString();
   writeJSON(PARTICIPANT_FILE, list);
-  res.json({ message: "Check-in thành công!" });
+  res.json({ message: "Check-in thành công! Chào mừng bạn." });
 });
 
 // 6. Gửi Feedback + Gửi Email thông báo
@@ -121,22 +125,23 @@ app.post("/api/feedback", (req, res) => {
   list.push({ ...req.body, timestamp: new Date().toISOString() });
   writeJSON(FEEDBACK_FILE, list);
 
-  // Gửi Mail
+  // Gửi Mail thông báo về agileteam782@gmail.com
   const mailOptions = {
     from: '"Hệ thống CLB" <agileteam782@gmail.com>',
     to: ADMIN_EMAIL,
     subject: `📩 Feedback mới từ ${name || 'Người dùng'}`,
-    text: `Nội dung phản hồi: ${content}`
+    text: `Bạn có phản hồi mới từ hệ thống:\n\nNgười gửi: ${name}\nNội dung: ${content}`
   };
 
   transporter.sendMail(mailOptions, (err) => {
     if (err) console.log("Lỗi gửi mail:", err);
+    else console.log("Đã gửi email thông báo feedback!");
   });
 
   res.json({ message: "Cảm ơn bạn đã phản hồi!" });
 });
 
-// 7. Lấy danh sách người tham gia (Dành cho Admin)
+// 7. Lấy danh sách người tham gia (Chỉ dành cho trang Admin)
 app.get("/api/participants", (req, res) => {
   res.json(readJSON(PARTICIPANT_FILE));
 });
@@ -145,4 +150,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
