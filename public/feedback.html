@@ -16,8 +16,10 @@
             border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
             background: white; padding: 30px; margin-top: -30px; 
         }
-        .btn-success { background-color: #28a745; border: none; padding: 12px; font-weight: 700; border-radius: 12px; }
-        .btn-success:hover { background-color: #218838; transform: translateY(-2px); }
+        .btn-success { background-color: #28a745; border: none; padding: 12px; font-weight: 700; border-radius: 12px; transition: all 0.3s; }
+        .btn-success:hover { background-color: #218838; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3); }
+
+        /* Loader đồng bộ */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #1e3c72; display: flex; justify-content: center; align-items: center;
@@ -26,6 +28,11 @@
         .spinner { width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .loader-hidden { opacity: 0; visibility: hidden; }
+
+        @media (max-width: 576px) {
+            .feedback-card { padding: 20px; margin: -30px 15px 0 15px; }
+            .banner-small h2 { font-size: 1.5rem; }
+        }
     </style>
 </head>
 <body>
@@ -33,10 +40,13 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold" href="index.html">🎉 CLB Event</a>
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="index.html">
+                <img src="logo.png" alt="Logo" style="height: 35px; margin-right: 10px; object-fit: contain;">
+                <span class="d-none d-sm-inline">CLB Event Manager</span>
+            </a>
             <div class="ms-auto">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="register.html">Đăng ký</a></li>
+                <ul class="navbar-nav flex-row">
+                    <li class="nav-item me-3"><a class="nav-link" href="register.html">Đăng ký</a></li>
                     <li class="nav-item"><a class="nav-link active" href="feedback.html">Góp ý</a></li>
                 </ul>
             </div>
@@ -45,7 +55,7 @@
 
     <div class="banner-small">
         <h2 class="fw-bold">📩 Ý KIẾN CỦA BẠN</h2>
-        <p class="text-white-50">Giúp chúng mình hoàn thiện các sự kiện IT hơn nhé!</p>
+        <p class="text-white-50 px-3">Giúp chúng mình hoàn thiện các sự kiện IT hơn nhé!</p>
     </div>
 
     <div class="container mb-5">
@@ -54,15 +64,15 @@
                 <div class="feedback-card">
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Họ và tên (Không bắt buộc)</label>
-                        <input type="text" id="fbName" class="form-control" placeholder="Tên của bạn...">
+                        <input type="text" id="fbName" class="form-control form-control-lg" placeholder="Tên của bạn...">
                     </div>
                     <div class="mb-4">
                         <label class="form-label fw-semibold">Nội dung góp ý</label>
-                        <textarea id="fbContent" class="form-control" rows="5" placeholder="Bạn cảm thấy thế nào về sự kiện?"></textarea>
+                        <textarea id="fbContent" class="form-control form-control-lg" rows="5" placeholder="Bạn cảm thấy thế nào về sự kiện?"></textarea>
                     </div>
-                    <button class="btn btn-success w-100 shadow" onclick="sendFeedback()">GỬI PHẢN HỒI NGAY</button>
+                    <button class="btn btn-success w-100 btn-lg shadow" onclick="sendFeedback()">GỬI PHẢN HỒI NGAY</button>
                     <div class="text-center mt-4">
-                        <a href="index.html" class="text-decoration-none text-muted small">← Quay lại trang chủ</a>
+                        <a href="register.html" class="text-decoration-none text-muted small">← Quay lại trang Đăng ký</a>
                     </div>
                 </div>
             </div>
@@ -98,15 +108,15 @@
             .then(res => res.json())
             .then(data => {
                 loader.classList.add("loader-hidden");
-                alert("Cảm ơn bạn! Phản hồi đã được gửi đến email của ban tổ chức.");
+                alert("Cảm ơn bạn! Phản hồi đã được gửi đến ban tổ chức.");
+                // Đồng bộ quay lại trang đăng ký theo yêu cầu của Lộc
                 window.location.href = "register.html";
             })
             .catch(() => {
-                loader.classList.remove("loader-hidden");
+                loader.classList.add("loader-hidden");
                 alert("Lỗi kết nối server rồi!");
             });
         }
     </script>
 </body>
 </html>
-
