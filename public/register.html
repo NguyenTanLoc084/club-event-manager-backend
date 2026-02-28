@@ -1,45 +1,41 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CLB Event Manager | Đăng ký</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    body { font-family: 'Montserrat', sans-serif; background-color: #f8f9fa; margin: 0; }
-    .banner {
-      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg');
-      background-size: cover; background-position: center; color: white; padding: 80px 0; text-align: center;
-    }
-    .card-custom { border: none; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-
-    #loader {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: #1e3c72; display: flex; justify-content: center; align-items: center;
-        z-index: 9999; transition: opacity 0.5s ease, visibility 0.5s;
-    }
-    .spinner { width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s linear infinite; }
-    @keyframes spin { to { tranform: rotate(360deg); } }
-    .loader-hidden { opacity: 0; visibility: hidden; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký tham gia | CLB Event</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background-color: #f8f9fa; margin: 0; }
+        .banner {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg');
+            background-size: cover; background-position: center; color: white; padding: 60px 0; text-align: center;
+        }
+        .card-custom { border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .ticket-box { background: #f1f3f5; border: 2px dashed #1e3c72; border-radius: 10px; padding: 15px; margin-top: 15px; }
+        
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1e3c72; display: flex; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s ease; }
+        .spinner { width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loader-hidden { opacity: 0; visibility: hidden; }
+        
+        @media (max-width: 576px) { .banner { padding: 40px 0; } .card-custom { margin: 0 10px; } }
+    </style>
 </head>
 
 <body>
-<div id="loader">
-    <div class="spinner"></div>
-</div>
+<div id="loader"><div class="spinner"></div></div>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="index.html">🎉 CLB Event Manager</a>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link active" href="register.html">Đăng ký</a></li>
-        <li class="nav-item"><a class="nav-link" href="checkin-guest.html">Tự Check-in</a></li>
-        <li class="nav-item"><a class="nav-link" href="feedback.html">Góp ý</a></li>
-        <li class="nav-item"><a class="nav-link text-warning" href="index.html">Quay lại Portal</a></li>
-      </ul>
+    <a class="navbar-brand fw-bold d-flex align-items-center" href="index.html">
+        <img src="logo.png" alt="Logo" style="height: 35px; margin-right: 10px;">
+        <span class="d-none d-sm-inline">CLB Event Manager</span>
+    </a>
+    <div class="ms-auto d-flex">
+        <a class="nav-link text-white me-3" href="checkin-guest.html">Tự Check-in</a>
+        <a class="nav-link text-warning" href="index.html">Thoát</a>
     </div>
   </div>
 </nav>
@@ -47,70 +43,7 @@
 <section class="banner">
   <div class="container">
     <h1 class="fw-bold">Đăng ký tham gia</h1>
-    <p class="lead">Nhanh chóng – đơn giản – nhận vé QR ngay</p>
-  </div>
-</section>
-
-<div class="container my-5">
-  <div class="row justify-content-center"><!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CLB Event Manager | Đăng ký</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    body { font-family: 'Montserrat', sans-serif; background-color: #f8f9fa; margin: 0; }
-    .banner {
-      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg');
-      background-size: cover; background-position: center; color: white; padding: 80px 0; text-align: center;
-    }
-    .card-custom { border: none; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-
-    #loader {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: #1e3c72; display: flex; justify-content: center; align-items: center;
-        z-index: 9999; transition: opacity 0.5s ease, visibility 0.5s;
-    }
-    .spinner { width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .loader-hidden { opacity: 0; visibility: hidden; }
-    
-    /* Hiệu ứng cho phần hiển thị mã vé */
-    .ticket-box {
-        background: #f1f3f5;
-        border: 2px dashed #1e3c72;
-        border-radius: 10px;
-        padding: 15px;
-        margin-top: 15px;
-    }
-  </style>
-</head>
-
-<body>
-<div id="loader">
-    <div class="spinner"></div>
-</div>
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="index.html">🎉 CLB Event Manager</a>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link active" href="register.html">Đăng ký</a></li>
-        <li class="nav-item"><a class="nav-link" href="checkin-guest.html">Tự Check-in</a></li>
-        <li class="nav-item"><a class="nav-link" href="feedback.html">Góp ý</a></li>
-        <li class="nav-item"><a class="nav-link text-warning" href="index.html">Quay lại Portal</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<section class="banner">
-  <div class="container">
-    <h1 class="fw-bold">Đăng ký tham gia</h1>
-    <p class="lead">Nhanh chóng – đơn giản – nhận vé QR ngay</p>
+    <p class="lead">Nhận vé QR ngay sau khi hoàn tất</p>
   </div>
 </section>
 
@@ -118,21 +51,25 @@
   <div class="row justify-content-center">
     <div class="col-md-6 col-lg-5">
       <div class="card card-custom p-4">
-        <h3 class="mb-4 text-center fw-bold text-primary">📝 Thông tin đăng ký</h3>
+        <h3 class="mb-4 text-center fw-bold text-primary">📝 Thông tin cá nhân</h3>
 
         <div class="mb-3">
-          <label class="form-label fw-semibold">Chọn sự kiện tham gia</label>
-          <select id="eventId" class="form-select border-primary">
-            <option value="">Đang tải danh sách sự kiện...</option>
+          <label class="form-label fw-semibold">Sự kiện</label>
+          <select id="eventId" class="form-select border-primary form-control-lg">
+            <option value="">Đang tải danh sách...</option>
           </select>
         </div>
 
         <div class="mb-3">
           <label class="form-label fw-semibold">Họ và tên</label>
-          <input id="fullname" class="form-control" placeholder="Nguyễn Văn A">
+          <input id="fullname" class="form-control form-control-lg" placeholder="Ví dụ: Nguyễn Văn A">
         </div>
 
         <div class="row">
+          <div class="col-6 mb-3">
+            <label class="form-label fw-semibold">Khóa</label>
+            <input id="course" class="form-control" placeholder="K50...">
+          </div>
           <div class="col-6 mb-3">
             <label class="form-label fw-semibold">Giới tính</label>
             <select id="gender" class="form-select">
@@ -140,57 +77,51 @@
               <option value="Nữ">Nữ</option>
             </select>
           </div>
-          <div class="col-6 mb-3">
-            <label class="form-label fw-semibold">Khóa học</label>
-            <input id="course" class="form-control" placeholder="K50, K51...">
-          </div>
         </div>
 
         <div class="mb-4">
           <label class="form-label fw-semibold">Email sinh viên</label>
-          <input id="email" type="email" class="form-control" placeholder="email@sinhvien.edu.vn">
+          <input id="email" type="email" class="form-control form-control-lg" placeholder="email@sinhvien.edu.vn">
         </div>
 
-        <button class="btn btn-primary w-100 fw-bold py-2 shadow" onclick="handleUserRegistration()">
+        <button class="btn btn-primary w-100 fw-bold py-3 shadow" onclick="handleUserRegistration()">
           🎟 ĐĂNG KÝ NHẬN VÉ
         </button>
 
         <div id="qr-container" class="text-center mt-4" style="display:none;">
           <hr>
-          <p class="text-success fw-bold mb-2">🎉 Đăng ký thành công!</p>
-          
-          <img id="qr" src="" class="img-fluid rounded shadow-sm border mb-3" style="width: 200px; display: none;">
+          <p class="text-success fw-bold mb-2">🎉 ĐĂNG KÝ THÀNH CÔNG!</p>
+          <img id="qr" src="" class="img-fluid rounded shadow-sm border mb-3" style="width: 200px;">
           
           <div class="ticket-box">
               <p class="small text-muted mb-1 text-uppercase fw-bold">Mã vé của bạn</p>
               <h3 id="ticketCodeDisplay" class="fw-bold text-dark mb-0" style="letter-spacing: 2px;"></h3>
           </div>
-          
-          <p class="small text-muted mt-3">Hãy chụp màn hình lại để làm thủ tục check-in nhé!</p>
+          <p class="small text-muted mt-3 italic">Lộc nhắc: Chụp màn hình lại để check-in nhé!</p>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<footer class="text-center py-4 mt-5 text-muted border-top">
-  © 2026 CLB Event Manager – Agile Project
+<footer class="text-center py-4 text-muted border-top">
+    © 2026 CLB Event Manager – Agile Team 782
 </footer>
 
 <script>
-    window.addEventListener("load", function() {
-        setTimeout(() => {
-            document.getElementById("loader").classList.add("loader-hidden");
-        }, 500);
+    // Ẩn loader khi tải xong
+    window.addEventListener("load", () => {
+        setTimeout(() => document.getElementById("loader").classList.add("loader-hidden"), 500);
     });
 
-    document.addEventListener("DOMContentLoaded", function() {
+    // Tải danh sách sự kiện
+    document.addEventListener("DOMContentLoaded", () => {
         fetch('/api/events')
             .then(res => res.json())
             .then(data => {
                 const select = document.getElementById("eventId");
                 if (data.length === 0) {
-                    select.innerHTML = '<option value="">Không có sự kiện nào đang diễn ra</option>';
+                    select.innerHTML = '<option value="">Không có sự kiện diễn ra</option>';
                 } else {
                     select.innerHTML = data.map(ev => `<option value="${ev.id}">${ev.name}</option>`).join('');
                 }
@@ -199,186 +130,44 @@
 
     function handleUserRegistration() {
         const fullname = document.getElementById("fullname").value;
-        const gender = document.getElementById("gender").value;
-        const course = document.getElementById("course").value;
         const email = document.getElementById("email").value;
         const eventId = document.getElementById("eventId").value;
+        const loader = document.getElementById("loader");
 
         if (!fullname || !email || !eventId) {
-            alert("Nhắc bạn: Hãy điền đầy đủ tên, email và chọn sự kiện nhé!");
+            alert("Vui lòng điền đủ tên, email và chọn sự kiện nhé!");
             return;
         }
 
-        // Hiện lại loader để tạo cảm giác hệ thống đang xử lý
-        document.getElementById("loader").classList.remove("loader-hidden");
+        loader.classList.remove("loader-hidden");
 
         fetch('/api/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ fullname, gender, course, email, eventId })
+            body: JSON.stringify({ 
+                fullname, 
+                gender: document.getElementById("gender").value,
+                course: document.getElementById("course").value,
+                email, 
+                eventId 
+            })
         })
         .then(res => res.json())
         .then(data => {
-            // Ẩn loader
-            document.getElementById("loader").classList.add("loader-hidden");
-
+            loader.classList.add("loader-hidden");
             if (data.qr) {
-                const qrContainer = document.getElementById("qr-container");
-                const qrImg = document.getElementById("qr");
-                const ticketText = document.getElementById("ticketCodeDisplay");
-                
-                // Đổ dữ liệu QR
-                qrImg.src = data.qr;
-                qrImg.style.display = "inline-block";
-                
-                // Đổ dữ liệu Mã vé chữ
-                ticketText.innerText = data.ticket; // Giả sử server trả về field "ticket"
-                
-                qrContainer.style.display = "block";
-                
-                // Cuộn xuống để xem mã vé
-                qrContainer.scrollIntoView({ behavior: 'smooth' });
-                
-                alert("Đăng ký thành công! Hãy lưu lại mã vé nhé.");
+                document.getElementById("qr").src = data.qr;
+                document.getElementById("ticketCodeDisplay").innerText = data.ticket;
+                document.getElementById("qr-container").style.display = "block";
+                document.getElementById("qr-container").scrollIntoView({ behavior: 'smooth' });
+                alert("Đăng ký thành công!");
             }
         })
         .catch(err => {
-            document.getElementById("loader").classList.add("loader-hidden");
-            alert("Lỗi kết nối server!");
+            loader.classList.add("loader-hidden");
+            alert("Lỗi kết nối server Render!");
         });
     }
 </script>
-
 </body>
 </html>
-    <div class="col-md-6 col-lg-5">
-      <div class="card card-custom p-4">
-        <h3 class="mb-4 text-center fw-bold text-primary">📝 Thông tin đăng ký</h3>
-
-        <div class="mb-3">
-          <label class="form-label fw-semibold">Chọn sự kiện tham gia</label>
-          <select id="eventId" class="form-select border-primary">
-            <option value="">Đang tải danh sách sự kiện...</option>
-          </select>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label fw-semibold">Họ và tên</label>
-          <input id="fullname" class="form-control" placeholder="Nguyễn Văn A">
-        </div>
-
-        <div class="row">
-          <div class="col-6 mb-3">
-            <label class="form-label fw-semibold">Giới tính</label>
-            <select id="gender" class="form-select">
-              <option value="Nam">Nam</option>
-              <option value="Nữ">Nữ</option>
-            </select>
-          </div>
-          <div class="col-6 mb-3">
-            <label class="form-label fw-semibold">Khóa học</label>
-            <input id="course" class="form-control" placeholder="K50, K51...">
-          </div>
-        </div>
-
-        <div class="mb-4">
-          <label class="form-label fw-semibold">Email sinh viên</label>
-          <input id="email" type="email" class="form-control" placeholder="email@sinhvien.edu.vn">
-        </div>
-
-        <button class="btn btn-primary w-100 fw-bold py-2 shadow" onclick="handleUserRegistration()">
-          🎟 ĐĂNG KÝ NHẬN VÉ
-        </button>
-
-        <div id="qr-container" class="text-center mt-4" style="display:none;">
-          <hr>
-          <p class="text-success fw-bold mb-2">🎉 Đăng ký thành công!</p>
-          <p class="small text-muted mb-3">Vui lòng chụp màn hình vé QR bên dưới</p>
-          <img id="qr" src="" class="img-fluid rounded shadow-sm border" style="width: 200px;">
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<footer class="text-center py-4 mt-5 text-muted border-top">
-  © 2026 CLB Event Manager – Agile Project
-</footer>
-
-<script>
-    window.addEventListener("load", function() {
-        setTimeout(() => {
-            document.getElementById("loader").classList.add("loader-hidden");
-        }, 500);
-    });
-    document.addEventListener("DOMContentLoaded", function() {
-        fetch('/api/events')
-            .then(res => res.json())
-            .then(data => {
-                const select = document.getElementById("eventId");
-                if (data.length === 0) {
-                    select.innerHTML = '<option value="">Không có sự kiện nào đang diễn ra</option>';
-                } else {
-                    select.innerHTML = data.map(ev => `<option value="${ev.id}">${ev.name}</option>`).join('');
-                }
-            });
-    });
-    function handleUserRegistration() {
-    const fullname = document.getElementById("fullname").value;
-    const email = document.getElementById("email").value;
-    const eventId = document.getElementById("eventId").value;
-
-    if (!fullname || !email || !eventId) {
-        alert("Lộc nhắc: Vui lòng điền đủ tên, email và chọn sự kiện!");
-        return;
-    }
-
-    // Hiện lại loader khi đang đăng ký
-    document.getElementById("loader").classList.remove("loader-hidden");
-
-    fetch('/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-            fullname, 
-            gender: document.getElementById("gender").value,
-            course: document.getElementById("course").value,
-            email, 
-            eventId 
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        document.getElementById("loader").classList.add("loader-hidden");
-
-        if (data.qr) {
-            const qrContainer = document.getElementById("qr-container");
-            const qrImg = document.getElementById("qr");
-            const ticketText = document.getElementById("ticketCodeDisplay");
-            qrImg.src = data.qr;
-            qrImg.style.display = "inline-block";
-            if (ticketText) {
-                ticketText.innerText = data.ticket; 
-            }
-            
-            qrContainer.style.display = "block";
-            qrContainer.scrollIntoView({ behavior: 'smooth' }); 
-            alert("Đăng ký thành công! Hãy lưu lại mã vé nhé.");
-        } else {
-            alert("Lỗi server: " + (data.message || "Không thể tạo vé"));
-        }
-    })
-    .catch(err => {
-        document.getElementById("loader").classList.add("loader-hidden");
-        console.error("Lỗi đăng ký:", err);
-        alert("Lỗi kết nối server rồi Lộc ơi!");
-    });
-}
-</script>
-
-</body>
-</html>
-
-
-
-
