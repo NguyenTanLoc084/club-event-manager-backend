@@ -323,42 +323,62 @@
                 }
             });
     });
-
-    // 3. Hàm xử lý đăng ký
     function handleUserRegistration() {
-        const fullname = document.getElementById("fullname").value;
-        const gender = document.getElementById("gender").value;
-        const course = document.getElementById("course").value;
-        const email = document.getElementById("email").value;
-        const eventId = document.getElementById("eventId").value;
+    const fullname = document.getElementById("fullname").value;
+    const email = document.getElementById("email").value;
+    const eventId = document.getElementById("eventId").value;
 
-        if (!fullname || !email || !eventId) {
-            alert("Nhắc bạn: Hãy điền đầy đủ tên, email và chọn sự kiện nhé!");
-            return;
-        }
-
-        fetch('/api/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ fullname, gender, course, email, eventId })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.qr) {
-                const qrContainer = document.getElementById("qr-container");
-                const qrImg = document.getElementById("qr");
-                qrImg.src = data.qr;
-                qrImg.style.display = "inline-block";
-                qrContainer.style.display = "block";
-                alert("Đăng ký thành công! Hãy lưu lại mã QR nhé.");
-            }
-        })
-        .catch(err => alert("Lỗi kết nối server!"));
+    if (!fullname || !email || !eventId) {
+        alert("Lộc nhắc: Vui lòng điền đủ tên, email và chọn sự kiện!");
+        return;
     }
+
+    // Hiện lại loader khi đang đăng ký
+    document.getElementById("loader").classList.remove("loader-hidden");
+
+    fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            fullname, 
+            gender: document.getElementById("gender").value,
+            course: document.getElementById("course").value,
+            email, 
+            eventId 
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("loader").classList.add("loader-hidden");
+
+        if (data.qr) {
+            const qrContainer = document.getElementById("qr-container");
+            const qrImg = document.getElementById("qr");
+            const ticketText = document.getElementById("ticketCodeDisplay");
+            qrImg.src = data.qr;
+            qrImg.style.display = "inline-block";
+            if (ticketText) {
+                ticketText.innerText = data.ticket; 
+            }
+            
+            qrContainer.style.display = "block";
+            qrContainer.scrollIntoView({ behavior: 'smooth' }); 
+            alert("Đăng ký thành công! Hãy lưu lại mã vé nhé.");
+        } else {
+            alert("Lỗi server: " + (data.message || "Không thể tạo vé"));
+        }
+    })
+    .catch(err => {
+        document.getElementById("loader").classList.add("loader-hidden");
+        console.error("Lỗi đăng ký:", err);
+        alert("Lỗi kết nối server rồi Lộc ơi!");
+    });
+}
 </script>
 
 </body>
 </html>
+
 
 
 
