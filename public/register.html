@@ -97,7 +97,7 @@
               <p class="small text-muted mb-1 text-uppercase fw-bold">Mã vé của bạn</p>
               <h3 id="ticketCodeDisplay" class="fw-bold text-dark mb-0" style="letter-spacing: 2px;"></h3>
           </div>
-          <p class="small text-muted mt-3 italic">Lộc nhắc: Chụp màn hình lại để check-in nhé!</p>
+          <p class="small text-muted mt-3 italic">Chụp màn hình lại để check-in nhé!</p>
         </div>
       </div>
     </div>
@@ -105,16 +105,13 @@
 </div>
 
 <footer class="text-center py-4 text-muted border-top">
-    © 2026 CLB Event Manager – Agile Team 782
+    © 2026 CLB Event Manager
 </footer>
 
 <script>
-    // Ẩn loader khi tải xong
     window.addEventListener("load", () => {
         setTimeout(() => document.getElementById("loader").classList.add("loader-hidden"), 500);
     });
-
-    // Tải danh sách sự kiện
     document.addEventListener("DOMContentLoaded", () => {
         fetch('/api/events')
             .then(res => res.json())
@@ -171,3 +168,4 @@
 </script>
 </body>
 </html>
+
