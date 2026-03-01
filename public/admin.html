@@ -10,6 +10,9 @@
     <style>
         body { font-family: 'Montserrat', sans-serif; background-color: #f0f2f5; margin: 0; }
         .table-container { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .stat-card { border: none; border-radius: 15px; transition: transform 0.3s; color: white; }
+        .stat-card:hover { transform: translateY(-5px); }
+        
         #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1e3c72; display: flex; justify-content: center; align-items: center; z-index: 9999; transition: opacity 0.5s; }
         .loader-hidden { opacity: 0; visibility: hidden; }
         .spinner { width: 50px; height: 50px; border: 5px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s linear infinite; }
@@ -18,6 +21,7 @@
 </head>
 <body>
     <script>
+        // Kiểm tra quyền Admin
         if (localStorage.getItem("isAdmin") !== "true") { window.location.href = "login.html"; }
     </script>
 
@@ -38,12 +42,42 @@
     </nav>
 
     <div class="container my-4">
+        <div class="row g-3 mb-4 text-center">
+            <div class="col-6 col-md-3">
+                <div class="card stat-card bg-primary p-3">
+                    <small class="text-uppercase fw-bold" style="font-size: 0.7rem;">Tổng Đăng Ký</small>
+                    <h2 id="totalParticipants" class="fw-bold mb-0">0</h2>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card stat-card bg-info p-3">
+                    <small class="text-uppercase fw-bold" style="font-size: 0.7rem;">Nam / Nữ</small>
+                    <h2 class="fw-bold mb-0"><span id="countMale">0</span> / <span id="countFemale">0</span></h2>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card stat-card bg-success p-3">
+                    <small class="text-uppercase fw-bold" style="font-size: 0.7rem;">Đã Check-in</small>
+                    <h2 id="totalCheckedIn" class="fw-bold mb-0">0</h2>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card stat-card bg-warning text-dark p-3">
+                    <small class="text-uppercase fw-bold" style="font-size: 0.7rem;">Khóa Tham Gia Nhiều</small>
+                    <h4 id="topCourse" class="fw-bold mb-0" style="font-size: 1.1rem;">...</h4>
+                </div>
+            </div>
+        </div>
+
         <div class="table-container">
-            <h4 class="fw-bold mb-4 text-dark">👥 Danh sách tham gia</h4>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold m-0 text-dark">👥 Danh sách tham gia</h4>
+                <button class="btn btn-sm btn-outline-secondary" onclick="loadDashboardData()">Làm mới</button>
+            </div>
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
                     <thead class="table-light">
-                        <tr>
+                        <tr class="small text-uppercase">
                             <th>Họ và tên</th>
                             <th>Khóa</th>
                             <th>Email</th>
@@ -51,18 +85,17 @@
                             <th>Ngày đăng ký</th>
                         </tr>
                     </thead>
-                    <tbody id="participantList">
-                        </tbody>
+                    <tbody id="participantList"></tbody>
                 </table>
             </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script src="js/main.js"></script>
     <script>
         window.addEventListener("load", () => {
             setTimeout(() => document.getElementById("loader").classList.add("loader-hidden"), 500);
+            loadDashboardData();
         });
 
         function logout() {
@@ -70,14 +103,54 @@
             window.location.href = "login.html";
         }
 
+        // Tải dữ liệu và Thống kê
+        function loadDashboardData() {
+            fetch('/api/participants')
+                .then(res => res.json())
+                .then(data => {
+                    const tbody = document.getElementById("participantList");
+                    
+                    // Thống kê số liệu
+                    const total = data.length;
+                    const male = data.filter(p => p.gender === "Nam").length;
+                    const female = data.filter(p => p.gender === "Nữ").length;
+                    const checkedIn = data.filter(p => p.checkedIn).length;
+                    
+                    const courses = {};
+                    data.forEach(p => { if(p.course) courses[p.course] = (courses[p.course] || 0) + 1; });
+                    const topCourse = Object.keys(courses).sort((a,b) => courses[b] - courses[a])[0] || "N/A";
+
+                    // Hiển thị thống kê
+                    document.getElementById("totalParticipants").innerText = total;
+                    document.getElementById("countMale").innerText = male;
+                    document.getElementById("countFemale").innerText = female;
+                    document.getElementById("totalCheckedIn").innerText = checkedIn;
+                    document.getElementById("topCourse").innerText = topCourse;
+
+                    // Đổ dữ liệu vào bảng
+                    tbody.innerHTML = data.map(p => `
+                        <tr>
+                            <td class="fw-bold text-primary">${p.fullname}</td>
+                            <td><span class="badge bg-light text-dark border">${p.course}</span></td>
+                            <td class="small">${p.email}</td>
+                            <td>
+                                <span class="badge ${p.checkedIn ? 'bg-success' : 'bg-warning text-dark'}">
+                                    ${p.checkedIn ? '✅ Đã Check-in' : '⏳ Chờ tham gia'}
+                                </span>
+                            </td>
+                            <td class="small text-muted">${new Date(p.registeredAt).toLocaleDateString('vi-VN')}</td>
+                        </tr>
+                    `).reverse().join('');
+                })
+                .catch(() => console.error("Không thể tải danh sách"));
+        }
+
+        // Xuất Excel
         function exportToExcel() {
             fetch('/api/participants')
                 .then(res => res.json())
                 .then(data => {
-                    if (data.length === 0) {
-                        alert("Chưa có dữ liệu để xuất file!");
-                        return;
-                    }
+                    if (data.length === 0) { alert("Chưa có dữ liệu!"); return; }
                     const worksheetData = data.map(p => ({
                         "Họ và tên": p.fullname,
                         "Giới tính": p.gender,
@@ -90,11 +163,10 @@
                     const worksheet = XLSX.utils.json_to_sheet(worksheetData);
                     const workbook = XLSX.utils.book_new();
                     XLSX.utils.book_append_sheet(workbook, worksheet, "Danh sách tham gia");
-                    const fileName = `Danh_sach_tham_gia_${new Date().toLocaleDateString('vi-VN').replace(/\//g, '-')}.xlsx`;
+                    const fileName = `Danh_sach_AgileTeam_${new Date().toLocaleDateString('vi-VN').replace(/\//g, '-')}.xlsx`;
                     XLSX.writeFile(workbook, fileName);
                 });
         }
     </script>
 </body>
 </html>
-
