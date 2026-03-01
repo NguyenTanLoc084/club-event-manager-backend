@@ -177,3 +177,15 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+app.post("/api/event/update/:id", (req, res) => {
+    const events = readJSON(EVENT_FILE);
+    const index = events.findIndex(ev => ev.id === req.params.id);
+    if (index !== -1) {
+        events[index] = { ...events[index], ...req.body };
+        writeJSON(EVENT_FILE, events);
+        res.json({ message: "Cập nhật thành công" });
+    } else {
+        res.status(404).json({ message: "Không tìm thấy sự kiện" });
+    }
+});
+
