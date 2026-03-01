@@ -45,10 +45,6 @@ function writeJSON(file, data) {
     console.error(`Lỗi ghi file ${file}:`, err);
   }
 }
-
-// --- API HỆ THỐNG ---
-
-// 1. Admin Login
 app.post("/api/admin/login", (req, res) => {
   const { email, password } = req.body;
   if (email === ADMIN_EMAIL && password === "123456") {
@@ -58,7 +54,6 @@ app.post("/api/admin/login", (req, res) => {
   }
 });
 
-// 2. Tạo sự kiện mới
 app.post("/api/event", (req, res) => {
   const events = readJSON(EVENT_FILE);
   const event = {
@@ -73,12 +68,10 @@ app.post("/api/event", (req, res) => {
   res.json({ message: "Tạo sự kiện thành công", event });
 });
 
-// 3. Lấy danh sách sự kiện
 app.get("/api/events", (req, res) => {
   res.json(readJSON(EVENT_FILE));
 });
 
-// 4. Cập nhật thông tin sự kiện
 app.post("/api/event/update/:id", (req, res) => {
     const events = readJSON(EVENT_FILE);
     const index = events.findIndex(ev => ev.id === req.params.id);
@@ -91,7 +84,6 @@ app.post("/api/event/update/:id", (req, res) => {
     }
 });
 
-// 5. Xóa sự kiện
 app.post("/api/event/delete/:id", (req, res) => {
     let events = readJSON(EVENT_FILE);
     const originalLength = events.length;
@@ -105,7 +97,6 @@ app.post("/api/event/delete/:id", (req, res) => {
     }
 });
 
-// 6. Đăng ký tham gia & Gửi Email vé QR
 app.post("/api/register", async (req, res) => {
   try {
     const list = readJSON(PARTICIPANT_FILE);
@@ -151,7 +142,6 @@ app.post("/api/register", async (req, res) => {
   }
 });
 
-// 7. Check-in sự kiện
 app.post("/api/checkin", (req, res) => {
   const list = readJSON(PARTICIPANT_FILE);
   const p = list.find(x => x.ticket === req.body.ticket);
@@ -165,7 +155,6 @@ app.post("/api/checkin", (req, res) => {
   res.json({ message: "Check-in thành công! Chào mừng bạn." });
 });
 
-// 8. Gửi Feedback
 app.post("/api/feedback", (req, res) => {
   const { name, content } = req.body;
   const list = readJSON(FEEDBACK_FILE);
@@ -186,7 +175,6 @@ app.post("/api/feedback", (req, res) => {
   res.json({ message: "Cảm ơn bạn đã phản hồi!" });
 });
 
-// 9. Lấy danh sách người tham gia (Dùng cho Dashboard Admin)
 app.get("/api/participants", (req, res) => {
   res.json(readJSON(PARTICIPANT_FILE));
 });
@@ -195,3 +183,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
