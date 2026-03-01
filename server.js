@@ -46,6 +46,8 @@ function writeJSON(file, data) {
   }
 }
 
+// --- API HỆ THỐNG ---
+
 // 1. Admin Login
 app.post("/api/admin/login", (req, res) => {
   const { email, password } = req.body;
@@ -56,7 +58,7 @@ app.post("/api/admin/login", (req, res) => {
   }
 });
 
-// 2. Tạo sự kiện
+// 2. Tạo sự kiện mới
 app.post("/api/event", (req, res) => {
   const events = readJSON(EVENT_FILE);
   const event = {
@@ -76,7 +78,34 @@ app.get("/api/events", (req, res) => {
   res.json(readJSON(EVENT_FILE));
 });
 
-// 4. Đăng ký tham gia & Gửi Email vé QR (Đã sửa lỗi)
+// 4. Cập nhật thông tin sự kiện
+app.post("/api/event/update/:id", (req, res) => {
+    const events = readJSON(EVENT_FILE);
+    const index = events.findIndex(ev => ev.id === req.params.id);
+    if (index !== -1) {
+        events[index] = { ...events[index], ...req.body };
+        writeJSON(EVENT_FILE, events);
+        res.json({ message: "Cập nhật thành công!" });
+    } else {
+        res.status(404).json({ message: "Không tìm thấy sự kiện" });
+    }
+});
+
+// 5. Xóa sự kiện
+app.post("/api/event/delete/:id", (req, res) => {
+    let events = readJSON(EVENT_FILE);
+    const originalLength = events.length;
+    events = events.filter(ev => ev.id !== req.params.id);
+    
+    if (events.length < originalLength) {
+        writeJSON(EVENT_FILE, events);
+        res.json({ message: "Đã xóa sự kiện thành công" });
+    } else {
+        res.status(404).json({ message: "Không tìm thấy sự kiện để xóa" });
+    }
+});
+
+// 6. Đăng ký tham gia & Gửi Email vé QR
 app.post("/api/register", async (req, res) => {
   try {
     const list = readJSON(PARTICIPANT_FILE);
@@ -84,12 +113,7 @@ app.post("/api/register", async (req, res) => {
     
     const ticket = "TICKET_" + Date.now();
     const participant = {
-      fullname,
-      email,
-      eventId,
-      gender,
-      course,
-      ticket,
+      fullname, email, eventId, gender, course, ticket,
       checkedIn: false,
       registeredAt: new Date().toISOString()
     };
@@ -97,10 +121,8 @@ app.post("/api/register", async (req, res) => {
     list.push(participant);
     writeJSON(PARTICIPANT_FILE, list);
 
-    // Tạo mã QR
     const qr = await QRCode.toDataURL(ticket);
 
-    // Gửi Email vé
     const mailOptions = {
       from: '"CLB Event Manager" <agileteam782@gmail.com>',
       to: email,
@@ -109,31 +131,27 @@ app.post("/api/register", async (req, res) => {
         <div style="font-family: Arial, sans-serif; border: 1px solid #ddd; padding: 20px; border-radius: 10px;">
           <h2 style="color: #1e3c72;">Chúc mừng bạn đã đăng ký thành công!</h2>
           <p>Chào <b>${fullname}</b>,</p>
-          <p>Mã vé của bạn là: <span style="font-size: 18px; color: #d9534f; font-weight: bold;">${ticket}</span></p>
-          <p>Vui lòng trình mã QR bên dưới tại cửa hội trường để check-in:</p>
-          <div style="text-align: center;">
+          <p>Mã vé: <span style="font-size: 18px; color: #d9534f; font-weight: bold;">${ticket}</span></p>
+          <div style="text-align: center; margin: 20px 0;">
             <img src="${qr}" alt="QR Code Ticket" style="width: 200px; height: 200px;" />
           </div>
-          <p style="color: #777; font-size: 12px;">Hẹn gặp bạn tại sự kiện!</p>
+          <p style="color: #777; font-size: 12px;">Vui lòng trình mã này khi đến sự kiện để check-in.</p>
         </div>
       `
     };
 
     transporter.sendMail(mailOptions, (err) => {
-      if (err) console.error("Lỗi gửi mail vé:", err);
-      else console.log(`Đã gửi vé đến email: ${email}`);
+      if (err) console.error("Lỗi gửi mail:", err);
     });
 
-    // Trả về kết quả cho trình duyệt hiển thị
     res.json({ qr, ticket });
 
   } catch (error) {
-    console.error("Lỗi API Register:", error);
     res.status(500).json({ message: "Lỗi hệ thống khi đăng ký" });
   }
 });
 
-// 5. Check-in
+// 7. Check-in sự kiện
 app.post("/api/checkin", (req, res) => {
   const list = readJSON(PARTICIPANT_FILE);
   const p = list.find(x => x.ticket === req.body.ticket);
@@ -147,7 +165,7 @@ app.post("/api/checkin", (req, res) => {
   res.json({ message: "Check-in thành công! Chào mừng bạn." });
 });
 
-// 6. Gửi Feedback
+// 8. Gửi Feedback
 app.post("/api/feedback", (req, res) => {
   const { name, content } = req.body;
   const list = readJSON(FEEDBACK_FILE);
@@ -168,7 +186,7 @@ app.post("/api/feedback", (req, res) => {
   res.json({ message: "Cảm ơn bạn đã phản hồi!" });
 });
 
-// 7. Lấy danh sách người tham gia
+// 9. Lấy danh sách người tham gia (Dùng cho Dashboard Admin)
 app.get("/api/participants", (req, res) => {
   res.json(readJSON(PARTICIPANT_FILE));
 });
@@ -177,15 +195,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-app.post("/api/event/update/:id", (req, res) => {
-    const events = readJSON(EVENT_FILE);
-    const index = events.findIndex(ev => ev.id === req.params.id);
-    if (index !== -1) {
-        events[index] = { ...events[index], ...req.body };
-        writeJSON(EVENT_FILE, events);
-        res.json({ message: "Cập nhật thành công" });
-    } else {
-        res.status(404).json({ message: "Không tìm thấy sự kiện" });
-    }
-});
-
