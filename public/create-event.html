@@ -7,6 +7,10 @@
     <link rel="icon" type="image/png" href="logo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4/bootstrap-4.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         body { font-family: 'Montserrat', sans-serif; background-color: #f0f2f5; }
         .card-custom { border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); background: white; }
@@ -132,19 +136,74 @@
                             </span>
                         </td>
                         <td class="text-end">
-                            <button class="btn btn-sm btn-outline-primary" onclick="exportParticipants('${ev.id}', '${ev.name}')">📊 Xuất khách</button>
-                            <button class="btn btn-sm btn-light ms-1" onclick="prepareEdit('${ev.id}')">✏️</button>
+                            <button class="btn btn-sm btn-outline-primary" onclick="exportParticipants('${ev.id}', '${ev.name}')" title="Xuất danh sách">📊</button>
+                            <button class="btn btn-sm btn-light ms-1" onclick="prepareEdit('${ev.id}')" title="Sửa">✏️</button>
+                            <button class="btn btn-sm btn-outline-danger ms-1" onclick="confirmDelete('${ev.id}', '${ev.name}')" title="Xóa">🗑️</button>
                         </td>
                     </tr>
                 `;
             }).reverse().join('');
         }
+
+        function confirmDelete(id, name) {
+            Swal.fire({
+                title: 'Xác nhận xóa?',
+                text: `Bạn có chắc chắn muốn xóa sự kiện "${name}" không?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Đúng, xóa ngay!',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/api/event/delete/${id}`, { method: 'POST' })
+                        .then(res => res.json())
+                        .then(data => {
+                            Swal.fire({
+                                title: 'Đã xóa!',
+                                text: data.message,
+                                icon: 'success',
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+                            loadEvents();
+                        });
+                }
+            });
+        }
+
+        function saveEvent() {
+            const id = document.getElementById("editEventId").value;
+            const name = document.getElementById("eventName").value;
+            const time = document.getElementById("eventTime").value;
+            const locationVal = document.getElementById("eventLocation").value;
+
+            if (!name || !time || !locationVal) {
+                Swal.fire('Lỗi', 'Vui lòng điền đầy đủ thông tin!', 'error');
+                return;
+            }
+
+            const data = { name, time, location: locationVal };
+            const url = id ? `/api/event/update/${id}` : '/api/event';
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            }).then(() => {
+                Swal.fire({ icon: 'success', title: 'Thành công', timer: 1500, showConfirmButton: false });
+                setTimeout(() => location.reload(), 1500);
+            });
+        }
+
+        // Các hàm Export và Import giữ nguyên logic nhưng nâng cấp Alert
         function exportParticipants(eventId, eventName) {
             fetch('/api/participants')
                 .then(res => res.json())
                 .then(data => {
                     const filtered = data.filter(p => p.eventId === eventId);
-                    if (filtered.length === 0) return alert("Sự kiện này chưa có người đăng ký!");
+                    if (filtered.length === 0) return Swal.fire('Thông báo', 'Sự kiện này chưa có người đăng ký!', 'info');
                     
                     const ws = XLSX.utils.json_to_sheet(filtered.map(p => ({
                         "Họ tên": p.fullname, "Khóa": p.course, "Email": p.email, 
@@ -156,40 +215,6 @@
                 });
         }
 
-        function prepareCreate() {
-            document.getElementById("modalTitle").innerText = "Tạo Sự Kiện Mới";
-            document.getElementById("editEventId").value = "";
-            document.getElementById("eventName").value = "";
-            document.getElementById("eventLocation").value = "";
-        }
-
-        function prepareEdit(id) {
-            const ev = allEvents.find(x => x.id === id);
-            document.getElementById("modalTitle").innerText = "Sửa Thông Tin";
-            document.getElementById("editEventId").value = ev.id;
-            document.getElementById("eventName").value = ev.name;
-            document.getElementById("eventLocation").value = ev.location;
-            new bootstrap.Modal(document.getElementById('eventModal')).show();
-        }
-
-        function saveEvent() {
-            const id = document.getElementById("editEventId").value;
-            const data = {
-                name: document.getElementById("eventName").value,
-                time: document.getElementById("eventTime").value,
-                location: document.getElementById("eventLocation").value
-            };
-            
-            const url = id ? `/api/event/update/${id}` : '/api/event';
-            fetch(url, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            }).then(() => {
-                location.reload();
-            });
-        }
-
         function handleImport(e) {
             const file = e.target.files[0];
             const reader = new FileReader();
@@ -199,16 +224,42 @@
                 const ws = wb.Sheets[wb.SheetNames[0]];
                 const data = XLSX.utils.sheet_to_json(ws);
 
-                alert("Đang xử lý import " + data.length + " sự kiện...");
+                Swal.fire({
+                    title: 'Đang xử lý',
+                    text: `Đang import ${data.length} sự kiện...`,
+                    allowOutsideClick: false,
+                    didOpen: () => { Swal.showLoading(); }
+                });
+
                 Promise.all(data.map(item => 
                     fetch('/api/event', {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
                         body: JSON.stringify({ name: item.Ten, time: item.ThoiGian, location: item.DiaDiem })
                     })
-                )).then(() => location.reload());
+                )).then(() => {
+                    Swal.fire('Thành công', 'Đã import dữ liệu thành công!', 'success').then(() => location.reload());
+                });
             };
             reader.readAsBinaryString(file);
+        }
+
+        function prepareCreate() {
+            document.getElementById("modalTitle").innerText = "Tạo Sự Kiện Mới";
+            document.getElementById("editEventId").value = "";
+            document.getElementById("eventName").value = "";
+            document.getElementById("eventTime").value = "";
+            document.getElementById("eventLocation").value = "";
+        }
+
+        function prepareEdit(id) {
+            const ev = allEvents.find(x => x.id === id);
+            document.getElementById("modalTitle").innerText = "Sửa Thông Tin";
+            document.getElementById("editEventId").value = ev.id;
+            document.getElementById("eventName").value = ev.name;
+            document.getElementById("eventTime").value = ev.time;
+            document.getElementById("eventLocation").value = ev.location;
+            new bootstrap.Modal(document.getElementById('eventModal')).show();
         }
     </script>
 </body>
