@@ -21,7 +21,6 @@
 </head>
 <body>
     <script>
-        // Kiểm tra quyền Admin
         if (localStorage.getItem("isAdmin") !== "true") { window.location.href = "login.html"; }
     </script>
 
@@ -102,15 +101,11 @@
             localStorage.removeItem("isAdmin");
             window.location.href = "login.html";
         }
-
-        // Tải dữ liệu và Thống kê
         function loadDashboardData() {
             fetch('/api/participants')
                 .then(res => res.json())
                 .then(data => {
                     const tbody = document.getElementById("participantList");
-                    
-                    // Thống kê số liệu
                     const total = data.length;
                     const male = data.filter(p => p.gender === "Nam").length;
                     const female = data.filter(p => p.gender === "Nữ").length;
@@ -119,15 +114,12 @@
                     const courses = {};
                     data.forEach(p => { if(p.course) courses[p.course] = (courses[p.course] || 0) + 1; });
                     const topCourse = Object.keys(courses).sort((a,b) => courses[b] - courses[a])[0] || "N/A";
-
-                    // Hiển thị thống kê
                     document.getElementById("totalParticipants").innerText = total;
                     document.getElementById("countMale").innerText = male;
                     document.getElementById("countFemale").innerText = female;
                     document.getElementById("totalCheckedIn").innerText = checkedIn;
                     document.getElementById("topCourse").innerText = topCourse;
 
-                    // Đổ dữ liệu vào bảng
                     tbody.innerHTML = data.map(p => `
                         <tr>
                             <td class="fw-bold text-primary">${p.fullname}</td>
@@ -144,8 +136,6 @@
                 })
                 .catch(() => console.error("Không thể tải danh sách"));
         }
-
-        // Xuất Excel
         function exportToExcel() {
             fetch('/api/participants')
                 .then(res => res.json())
@@ -170,4 +160,5 @@
     </script>
 </body>
 </html>
+
 
