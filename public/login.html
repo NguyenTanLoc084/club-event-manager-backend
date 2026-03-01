@@ -7,6 +7,10 @@
     <link rel="icon" type="image/png" href="logo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4/bootstrap-4.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         body { font-family: 'Montserrat', sans-serif; background: #f4f7f6; height: 100vh; display: flex; align-items: center; margin: 0; }
         .login-card { border: none; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 100%; max-width: 400px; padding: 2.5rem; background: white; z-index: 10; }
@@ -31,8 +35,8 @@
     <div class="container d-flex justify-content-center">
         <div class="login-card">
             <div class="text-center mb-3">
-    <img src="logo.png" alt="Logo CLB" style="height: 70px; width: auto; object-fit: contain;">
-</div>
+                <img src="logo.png" alt="Logo CLB" style="height: 70px; width: auto; object-fit: contain;">
+            </div>
             <h3 class="text-center fw-bold mb-4 text-dark">🔐 Admin Access</h3>
             <p class="text-muted text-center small mb-4">Vui lòng xác thực để quản lý hệ thống</p>
             
@@ -42,7 +46,7 @@
             </div>
             <div class="mb-4">
                 <label class="form-label fw-semibold small">Mật khẩu</label>
-                <input type="password" id="password" class="form-control form-control-lg" placeholder="Nhập mật khẩu (123456)">
+                <input type="password" id="password" class="form-control form-control-lg" placeholder="Nhập mật khẩu">
             </div>
             
             <button class="btn btn-dark w-100 btn-lg" onclick="handleLogin()">XÁC NHẬN ĐĂNG NHẬP</button>
@@ -60,15 +64,22 @@
             }, 500);
         });
 
+        // HÀM XỬ LÝ ĐĂNG NHẬP VỚI SWEETALERT2
         function handleLogin() {
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
             const loader = document.getElementById("loader");
 
             if (!password) {
-                alert("Bạn quên nhập mật khẩu rồi!");
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Lộc nhắc nè!',
+                    text: 'Bạn quên nhập mật khẩu rồi!',
+                    confirmButtonColor: '#1e3c72'
+                });
                 return;
             }
+
             loader.classList.remove("loader-hidden");
 
             fetch('/api/admin/login', {
@@ -80,17 +91,39 @@
             .then(data => {
                 if (data.success) {
                     localStorage.setItem("isAdmin", "true");
-                    setTimeout(() => {
-                        window.location.href = "admin.html"; 
-                    }, 800);
+                    
+                    // POP-UP ĐĂNG NHẬP THÀNH CÔNG CÓ LOGO CLB
+                    Swal.fire({
+                        title: 'ĐĂNG NHẬP THÀNH CÔNG!',
+                        text: 'Chào mừng Lộc quay trở lại trang quản trị nhé.',
+                        imageUrl: 'logo.png',
+                        imageWidth: 80,
+                        imageHeight: 80,
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true
+                    }).then(() => {
+                        window.location.href = "admin.html";
+                    });
                 } else {
                     loader.classList.add("loader-hidden");
-                    alert("Mật khẩu không chính xác! Thử lại nhé.");
+                    // THÔNG BÁO SAI MẬT KHẨU
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Úi, mật khẩu sai!',
+                        text: 'Lộc kiểm tra lại mật khẩu nhé. Thử lại nào!',
+                        confirmButtonColor: '#d33'
+                    });
                 }
             })
             .catch(() => {
                 loader.classList.add("loader-hidden");
-                alert("Lỗi kết nối server !");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi server!',
+                    text: 'Không thể liên lạc với server Render Lộc ơi.',
+                    confirmButtonColor: '#d33'
+                });
             });
         }
     </script>
