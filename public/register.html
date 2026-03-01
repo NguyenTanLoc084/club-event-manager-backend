@@ -86,7 +86,7 @@
 
         <div class="mb-4">
           <label class="form-label fw-semibold">Email sinh viên</label>
-          <input id="email" type="email" class="form-control form-control-lg" placeholder="email@sinhvien.edu.vn">
+          <input id="email" type="email" class="form-control form-control-lg" placeholder="email@gmail.com">
         </div>
 
         <button class="btn btn-primary w-100 fw-bold py-3 shadow" onclick="handleUserRegistration()">
@@ -117,6 +117,7 @@
     window.addEventListener("load", () => {
         setTimeout(() => document.getElementById("loader").classList.add("loader-hidden"), 500);
     });
+
     document.addEventListener("DOMContentLoaded", () => {
         fetch('/api/events')
             .then(res => res.json())
@@ -131,18 +132,37 @@
     });
 
     function handleUserRegistration() {
-        const fullname = document.getElementById("fullname").value;
-        const email = document.getElementById("email").value;
+        const fullname = document.getElementById("fullname").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const course = document.getElementById("course").value.trim().toUpperCase();
         const eventId = document.getElementById("eventId").value;
         const loader = document.getElementById("loader");
-
-        if (!fullname || !email || !eventId) {
-            // THÔNG BÁO LỖI VỚI SWEETALERT2
+        if (!fullname || !email || !course || !eventId) {
             Swal.fire({
                 icon: 'warning',
                 title: 'Thiếu thông tin!',
-                text: 'Vui lòng điền đủ tên, email và chọn sự kiện nhé!',
+                text: 'Bạn vui lòng điền đủ tất cả các ô nhé!',
                 confirmButtonColor: '#1e3c72'
+            });
+            return;
+        }
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+        if (!emailRegex.test(email)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Email không hợp lệ!',
+                text: 'Hệ thống chỉ chấp nhận định dạng @gmail.com thôi Lộc nhé!',
+                confirmButtonColor: '#d33'
+            });
+            return;
+        }
+        const courseRegex = /^K\d{2}$/;
+        if (!courseRegex.test(course)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Khóa học sai định dạng!',
+                text: 'Bạn phải nhập K kèm 2 chữ số (Ví dụ: K50, K51).',
+                confirmButtonColor: '#d33'
             });
             return;
         }
@@ -155,7 +175,7 @@
             body: JSON.stringify({ 
                 fullname, 
                 gender: document.getElementById("gender").value,
-                course: document.getElementById("course").value,
+                course,
                 email, 
                 eventId 
             })
@@ -168,15 +188,16 @@
                 document.getElementById("ticketCodeDisplay").innerText = data.ticket;
                 document.getElementById("qr-container").style.display = "block";
                 document.getElementById("qr-container").scrollIntoView({ behavior: 'smooth' });
+
                 Swal.fire({
                     title: 'ĐĂNG KÝ THÀNH CÔNG!',
-                    text: 'Nhắc: Bạn đã nhận được vé QR, hãy chụp màn hình lại nhé!',
+                    text: 'Lộc nhắc: Chụp màn hình vé QR lại để check-in nhé!',
                     imageUrl: 'logo.png',
                     imageWidth: 80,
                     imageHeight: 80,
                     imageAlt: 'Logo CLB',
                     confirmButtonColor: '#1e3c72',
-                    timer: 3000,
+                    timer: 4000,
                     timerProgressBar: true
                 });
             }
@@ -186,7 +207,7 @@
             Swal.fire({
                 icon: 'error',
                 title: 'Lỗi server!',
-                text: 'Không thể kết nối đến server Render!',
+                text: 'Không thể kết nối đến server Render lúc này.',
                 confirmButtonColor: '#d33'
             });
         });
