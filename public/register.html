@@ -7,6 +7,10 @@
     <link rel="icon" type="image/png" href="logo.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bootstrap-4/bootstrap-4.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         body { font-family: 'Montserrat', sans-serif; background-color: #f8f9fa; margin: 0; }
         .banner {
@@ -133,7 +137,13 @@
         const loader = document.getElementById("loader");
 
         if (!fullname || !email || !eventId) {
-            alert("Vui lòng điền đủ tên, email và chọn sự kiện nhé!");
+            // THÔNG BÁO LỖI VỚI SWEETALERT2
+            Swal.fire({
+                icon: 'warning',
+                title: 'Thiếu thông tin!',
+                text: 'Vui lòng điền đủ tên, email và chọn sự kiện nhé!',
+                confirmButtonColor: '#1e3c72'
+            });
             return;
         }
 
@@ -158,16 +168,31 @@
                 document.getElementById("ticketCodeDisplay").innerText = data.ticket;
                 document.getElementById("qr-container").style.display = "block";
                 document.getElementById("qr-container").scrollIntoView({ behavior: 'smooth' });
-                alert("Đăng ký thành công!");
+
+                // POP-UP THÀNH CÔNG CÓ LOGO CLB
+                Swal.fire({
+                    title: 'ĐĂNG KÝ THÀNH CÔNG!',
+                    text: 'Lộc nhắc: Bạn đã nhận được vé QR, hãy chụp màn hình lại nhé!',
+                    imageUrl: 'logo.png',
+                    imageWidth: 80,
+                    imageHeight: 80,
+                    imageAlt: 'Logo CLB',
+                    confirmButtonColor: '#1e3c72',
+                    timer: 3000,
+                    timerProgressBar: true
+                });
             }
         })
         .catch(err => {
             loader.classList.add("loader-hidden");
-            alert("Lỗi kết nối server Render!");
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi server!',
+                text: 'Không thể kết nối đến server Render Lộc ơi!',
+                confirmButtonColor: '#d33'
+            });
         });
     }
 </script>
 </body>
 </html>
-
-
