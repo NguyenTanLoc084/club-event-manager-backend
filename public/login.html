@@ -63,8 +63,6 @@
                 document.getElementById("loader").classList.add("loader-hidden");
             }, 500);
         });
-
-        // HÀM XỬ LÝ ĐĂNG NHẬP VỚI SWEETALERT2
         function handleLogin() {
             const email = document.getElementById("email").value;
             const password = document.getElementById("password").value;
@@ -73,7 +71,7 @@
             if (!password) {
                 Swal.fire({
                     icon: 'warning',
-                    title: 'Lộc nhắc nè!',
+                    title: 'Nhắc nè!',
                     text: 'Bạn quên nhập mật khẩu rồi!',
                     confirmButtonColor: '#1e3c72'
                 });
@@ -91,11 +89,9 @@
             .then(data => {
                 if (data.success) {
                     localStorage.setItem("isAdmin", "true");
-                    
-                    // POP-UP ĐĂNG NHẬP THÀNH CÔNG CÓ LOGO CLB
                     Swal.fire({
                         title: 'ĐĂNG NHẬP THÀNH CÔNG!',
-                        text: 'Chào mừng Lộc quay trở lại trang quản trị nhé.',
+                        text: 'Chào mừng quay trở lại trang quản trị nhé.',
                         imageUrl: 'logo.png',
                         imageWidth: 80,
                         imageHeight: 80,
@@ -107,11 +103,10 @@
                     });
                 } else {
                     loader.classList.add("loader-hidden");
-                    // THÔNG BÁO SAI MẬT KHẨU
                     Swal.fire({
                         icon: 'error',
                         title: 'Úi, mật khẩu sai!',
-                        text: 'Lộc kiểm tra lại mật khẩu nhé. Thử lại nào!',
+                        text: 'Kiểm tra lại mật khẩu nhé. Thử lại nào!',
                         confirmButtonColor: '#d33'
                     });
                 }
@@ -121,7 +116,7 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Lỗi server!',
-                    text: 'Không thể liên lạc với server Render Lộc ơi.',
+                    text: 'Không thể liên lạc với server Render.',
                     confirmButtonColor: '#d33'
                 });
             });
