@@ -145,27 +145,30 @@
             }).reverse().join('');
         }
 
+        // POP-UP XÁC NHẬN XÓA CÓ LOGO
         function confirmDelete(id, name) {
             Swal.fire({
                 title: 'Xác nhận xóa?',
-                text: `Bạn có chắc chắn muốn xóa sự kiện "${name}" không?`,
-                icon: 'warning',
+                text: `Bạn có chắc muốn xóa sự kiện "${name}" không?`,
+                imageUrl: 'logo.png',
+                imageWidth: 80,
+                imageHeight: 80,
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Đúng, xóa ngay!',
-                cancelButtonText: 'Hủy'
+                cancelButtonColor: '#1e3c72',
+                confirmButtonText: 'Xóa ngay!',
+                cancelButtonText: 'Giữ lại'
             }).then((result) => {
                 if (result.isConfirmed) {
                     fetch(`/api/event/delete/${id}`, { method: 'POST' })
                         .then(res => res.json())
                         .then(data => {
                             Swal.fire({
+                                icon: 'success',
                                 title: 'Đã xóa!',
                                 text: data.message,
-                                icon: 'success',
-                                timer: 1500,
-                                showConfirmButton: false
+                                showConfirmButton: false,
+                                timer: 1500
                             });
                             loadEvents();
                         });
@@ -173,6 +176,7 @@
             });
         }
 
+        // POP-UP LƯU SỰ KIỆN CÓ LOGO
         function saveEvent() {
             const id = document.getElementById("editEventId").value;
             const name = document.getElementById("eventName").value;
@@ -180,7 +184,12 @@
             const locationVal = document.getElementById("eventLocation").value;
 
             if (!name || !time || !locationVal) {
-                Swal.fire('Lỗi', 'Vui lòng điền đầy đủ thông tin!', 'error');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Thiếu thông tin!',
+                    text: 'Bạn điền đầy đủ thông tin sự kiện nhé!',
+                    confirmButtonColor: '#1e3c72'
+                });
                 return;
             }
 
@@ -192,16 +201,32 @@
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data)
             }).then(() => {
-                Swal.fire({ icon: 'success', title: 'Thành công', timer: 1500, showConfirmButton: false });
+                Swal.fire({
+                    title: 'Thành công!',
+                    text: id ? 'Đã cập nhật sự kiện' : 'Đã tạo sự kiện mới',
+                    imageUrl: 'logo.png',
+                    imageWidth: 80,
+                    imageHeight: 80,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
                 setTimeout(() => location.reload(), 1500);
             });
         }
+
         function exportParticipants(eventId, eventName) {
             fetch('/api/participants')
                 .then(res => res.json())
                 .then(data => {
                     const filtered = data.filter(p => p.eventId === eventId);
-                    if (filtered.length === 0) return Swal.fire('Thông báo', 'Sự kiện này chưa có người đăng ký!', 'info');
+                    if (filtered.length === 0) {
+                        return Swal.fire({
+                            icon: 'info',
+                            title: 'Thông báo',
+                            text: 'Sự kiện này chưa có ai đăng ký!',
+                            confirmButtonColor: '#1e3c72'
+                        });
+                    }
                     
                     const ws = XLSX.utils.json_to_sheet(filtered.map(p => ({
                         "Họ tên": p.fullname, "Khóa": p.course, "Email": p.email, 
@@ -212,7 +237,6 @@
                     XLSX.writeFile(wb, `Khach_moi_${eventName}.xlsx`);
                 });
         }
-
         function handleImport(e) {
             const file = e.target.files[0];
             const reader = new FileReader();
@@ -223,8 +247,8 @@
                 const data = XLSX.utils.sheet_to_json(ws);
 
                 Swal.fire({
-                    title: 'Đang xử lý',
-                    text: `Đang import ${data.length} sự kiện...`,
+                    title: 'Đang xử lý...',
+                    text: `Hệ thống đang import ${data.length} sự kiện mới.`,
                     allowOutsideClick: false,
                     didOpen: () => { Swal.showLoading(); }
                 });
@@ -236,7 +260,13 @@
                         body: JSON.stringify({ name: item.Ten, time: item.ThoiGian, location: item.DiaDiem })
                     })
                 )).then(() => {
-                    Swal.fire('Thành công', 'Đã import dữ liệu thành công!', 'success').then(() => location.reload());
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Hoàn tất!',
+                        text: 'Dữ liệu sự kiện đã được đồng bộ.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => location.reload());
                 });
             };
             reader.readAsBinaryString(file);
