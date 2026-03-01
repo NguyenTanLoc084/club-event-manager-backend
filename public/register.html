@@ -168,11 +168,9 @@
                 document.getElementById("ticketCodeDisplay").innerText = data.ticket;
                 document.getElementById("qr-container").style.display = "block";
                 document.getElementById("qr-container").scrollIntoView({ behavior: 'smooth' });
-
-                // POP-UP THÀNH CÔNG CÓ LOGO CLB
                 Swal.fire({
                     title: 'ĐĂNG KÝ THÀNH CÔNG!',
-                    text: 'Lộc nhắc: Bạn đã nhận được vé QR, hãy chụp màn hình lại nhé!',
+                    text: 'Nhắc: Bạn đã nhận được vé QR, hãy chụp màn hình lại nhé!',
                     imageUrl: 'logo.png',
                     imageWidth: 80,
                     imageHeight: 80,
@@ -188,7 +186,7 @@
             Swal.fire({
                 icon: 'error',
                 title: 'Lỗi server!',
-                text: 'Không thể kết nối đến server Render Lộc ơi!',
+                text: 'Không thể kết nối đến server Render!',
                 confirmButtonColor: '#d33'
             });
         });
