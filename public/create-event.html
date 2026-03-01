@@ -196,8 +196,6 @@
                 setTimeout(() => location.reload(), 1500);
             });
         }
-
-        // Các hàm Export và Import giữ nguyên logic nhưng nâng cấp Alert
         function exportParticipants(eventId, eventName) {
             fetch('/api/participants')
                 .then(res => res.json())
