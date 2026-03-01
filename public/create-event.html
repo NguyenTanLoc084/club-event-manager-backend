@@ -139,8 +139,6 @@
                 `;
             }).reverse().join('');
         }
-
-        // Chức năng Xuất danh sách tham gia của từng sự kiện riêng biệt
         function exportParticipants(eventId, eventName) {
             fetch('/api/participants')
                 .then(res => res.json())
@@ -158,7 +156,6 @@
                 });
         }
 
-        // Chức năng Sửa & Tạo
         function prepareCreate() {
             document.getElementById("modalTitle").innerText = "Tạo Sự Kiện Mới";
             document.getElementById("editEventId").value = "";
@@ -193,7 +190,6 @@
             });
         }
 
-        // Chức năng Upload danh sách sự kiện (Import Excel)
         function handleImport(e) {
             const file = e.target.files[0];
             const reader = new FileReader();
@@ -202,8 +198,7 @@
                 const wb = XLSX.read(bstr, {type:'binary'});
                 const ws = wb.Sheets[wb.SheetNames[0]];
                 const data = XLSX.utils.sheet_to_json(ws);
-                
-                // Gửi từng dòng lên server để tạo sự kiện hàng loạt
+
                 alert("Đang xử lý import " + data.length + " sự kiện...");
                 Promise.all(data.map(item => 
                     fetch('/api/event', {
