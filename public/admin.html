@@ -17,7 +17,6 @@
 </head>
 <body>
     <script>
-        // Bảo mật: Nếu chưa login thì đuổi về login.html
         if (localStorage.getItem("isAdmin") !== "true") { window.location.href = "login.html"; }
     </script>
 
@@ -26,7 +25,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
         <div class="container">
             <a class="navbar-brand fw-bold d-flex align-items-center" href="index.html">
-                <img src="logo.png" alt="Logo CLB" style="height: 40px; width: auto; margin-right: 10px; object-fit: contain;">
+                <img src="logo.png" alt="Logo CLB" style="height: 40px; width: auto; margin-right: 10px; object-fit: contain;" onerror="this.src='https://via.placeholder.com/40'">
                 <span class="d-none d-sm-inline">CLB Event Manager</span>
             </a>
             <div class="ms-auto d-flex align-items-center">
@@ -39,7 +38,7 @@
 
     <div class="container my-4">
         <div class="table-container">
-            <h4 class="fw-bold mb-4">👥 Danh sách tham gia</h4>
+            <h4 class="fw-bold mb-4 text-dark">👥 Danh sách tham gia</h4>
             <div class="table-responsive">
                 <table class="table table-hover align-middle">
                     <thead class="table-light">
@@ -70,7 +69,6 @@
             window.location.href = "login.html";
         }
 
-        // ĐOẠN CODE XUẤT EXCEL CỦA LỘC
         function exportToExcel() {
             fetch('/api/participants')
                 .then(res => res.json())
